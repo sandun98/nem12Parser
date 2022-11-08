@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import simplenem12.MeterRead;
+import simplenem12.MeterReadException;
 import simplenem12.SimpleNem12Parser;
 
 @SpringBootTest
@@ -27,23 +28,28 @@ public class SimpleNem12ParserImplTest {
 		Collection<MeterRead> list = simpleNem12Parser.parseSimpleNem12(resource.getFile());
 		assertEquals(2, list.size(), "2 items expected");
 	}
-	
+
 	@Test
 	public void testParse_invalid_quality() throws IOException {
 		Resource resource = new ClassPathResource("SimpleNem12_invalid_quality.csv");
 		File file = resource.getFile();
 
-		Assertions.assertThrows(IllegalArgumentException.class, () -> simpleNem12Parser.parseSimpleNem12(file));
-
+		MeterReadException e = Assertions.assertThrows(MeterReadException.class,
+				() -> simpleNem12Parser.parseSimpleNem12(file));
+		Assertions.assertEquals(
+				"No enum constant simplenem12.Quality.B at line 3",
+				e.getMessage());
 	}
-	
 
 	@Test
 	public void testParse_invalid_unit() throws IOException {
 		Resource resource = new ClassPathResource("SimpleNem12_invalid_unit.csv");
 		File file = resource.getFile();
-		Assertions.assertThrows(IllegalArgumentException.class, () -> simpleNem12Parser.parseSimpleNem12(file));
-
+		MeterReadException e = Assertions.assertThrows(MeterReadException.class,
+				() -> simpleNem12Parser.parseSimpleNem12(file));
+		Assertions.assertEquals(
+				"No enum constant simplenem12.EnergyUnit.WH at line 2",
+				e.getMessage());
 	}
 
 }

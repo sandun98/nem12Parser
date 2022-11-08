@@ -25,6 +25,9 @@ public class SimpleNem12ParserImpl implements SimpleNem12Parser {
 		lineProcessor = simpleNem12LineProcessor;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public Collection<MeterRead> parseSimpleNem12(File simpleNem12File) {
 		Path path = Paths.get(simpleNem12File.getAbsolutePath());
@@ -37,6 +40,8 @@ public class SimpleNem12ParserImpl implements SimpleNem12Parser {
 			return lineProcessor.getMeterReads();
 		} catch (IOException e) {
 			throw new MeterReadException(e.getMessage(), e);
+		} catch (IllegalArgumentException e) {
+			throw new MeterReadException(e.getMessage() + " at line " + (lineProcessor.getLineNumber() + 1), e);
 		}
 	}
 

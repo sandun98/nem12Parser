@@ -20,7 +20,11 @@ public class SimpleNem12LineProcessorImpl implements LineProcessor {
 	final Logger log = LoggerFactory.getLogger(getClass());
 
 	private List<MeterRead> meterReads = new ArrayList<>();
-	private int lineIndex = 0;
+	private int lineNumber = 0;
+
+	public int getLineNumber() {
+		return lineNumber;
+	}
 
 	private SimpleNem12Line lastLine;
 
@@ -36,10 +40,11 @@ public class SimpleNem12LineProcessorImpl implements LineProcessor {
 	 */
 	public void process(String str) {
 		SimpleNem12Line line = new SimpleNem12Line(str);
-		if (lineIndex == 0) {
+		if (lineNumber == 0) {
 			if (!line.isStartFile()) {
 				throw new MeterReadException(
-						"File start could not be located : File start must contain " + SimpleNem12Line.START_FILE);
+						"File start could not be located : File start must contain " + SimpleNem12Line.START_FILE
+								+ " at line " + (lineNumber + 1));
 			}
 		} else {
 			String[] parts = line.getParts();
@@ -55,12 +60,12 @@ public class SimpleNem12LineProcessorImpl implements LineProcessor {
 		}
 
 		lastLine = line;
-		lineIndex++;
+		lineNumber++;
 	}
 
 	private String validateNmi(String nmi) {
 		if (nmi.length() != 10) {
-			throw new MeterReadException("nmi should be of 10 characters long");
+			throw new MeterReadException("nmi should be of 10 characters long at line " + (lineNumber + 1));
 		}
 		return nmi;
 	}
@@ -73,7 +78,8 @@ public class SimpleNem12LineProcessorImpl implements LineProcessor {
 	private void validateEndOfFile() {
 		if (lastLine != null && !lastLine.isEndFile()) {
 			throw new MeterReadException(
-					"File end could not be located : File end must contain " + SimpleNem12Line.END_FILE);
+					"File end could not be located : File end must contain " + SimpleNem12Line.END_FILE + " at line "
+							+ (lineNumber + 1));
 		}
 	}
 

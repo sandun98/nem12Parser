@@ -1,6 +1,5 @@
 package simplenem12;
 
-
 public class MeterReadException extends RuntimeException {
 
 	public MeterReadException(String message) {
