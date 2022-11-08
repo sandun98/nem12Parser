@@ -15,6 +15,11 @@ public class SimpleNem12Line {
 		if (line == null || line.trim().isEmpty()) {
 			throw new MeterReadException("line cannot be empty");
 		}
+		if (!line.trim().startsWith(START_METER_BLOCK)
+				&& !line.trim().startsWith(METER_READING)
+				&& !line.trim().equals(START_FILE) && !line.trim().equals(END_FILE)) {
+			throw new MeterReadException("Invalid record type");
+		}
 		content = line;
 	}
 

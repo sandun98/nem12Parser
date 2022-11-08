@@ -14,9 +14,9 @@ gradlew bootRun --args='.\src\test\resources\SimpleNem12.csv'
 
 ## Assumptiions
 
-* If a meter record is faulty processing of the file will exit with error
-* If a meter block start record is faulty processing of the file will exit with error
-* If start and end of file is not found processing will stop with error
+* If a meter record is faulty, processing of the file will stop with error
+* If a meter block start record is faulty, processing of the file will stop with error
+* If start and end of file is not found, processing will stop with error
 
 
 

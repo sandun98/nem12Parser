@@ -42,6 +42,8 @@ public class SimpleNem12ParserImpl implements SimpleNem12Parser {
 			throw new MeterReadException(e.getMessage(), e);
 		} catch (IllegalArgumentException e) {
 			throw new MeterReadException(e.getMessage() + " at line " + (lineProcessor.getLineNumber() + 1), e);
+		} catch (Throwable e) {
+			throw new MeterReadException(e.getMessage() + " at line " + (lineProcessor.getLineNumber() + 1), e);
 		}
 	}
 
